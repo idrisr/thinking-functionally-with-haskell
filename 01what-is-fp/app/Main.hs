@@ -1,8 +1,17 @@
 module Main where
 
-import qualified MyLib (someFunc)
+import Song
+import Text.Read
+import System.Environment (getArgs)
+
+printUsage :: IO ()
+printUsage = print "dude"
 
 main :: IO ()
 main = do
-  putStrLn "Hello, Haskell!"
-  MyLib.someFunc
+    args <- getArgs
+    case args of
+        [x] -> case readMaybe x :: Maybe Int of
+            Just y -> putStr $ song $ min y 9
+            Nothing -> printUsage
+        _ -> printUsage

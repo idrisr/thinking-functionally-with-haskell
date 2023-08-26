@@ -1,9 +1,9 @@
 module TestA (testsA) where
 
+import Data.List
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
-import Data.List
 
 double :: Integer -> Integer
 double x = 2 * x
@@ -13,6 +13,7 @@ testsA =
     testGroup
         "A"
         [ unitTests
+        , propTests
         ]
 
 unitTests :: TestTree
@@ -33,10 +34,16 @@ unitTests =
 propA :: [Integer] -> Bool
 propA xs = (sum . map double) xs == (double . sum) xs
 
-propB :: [Integer] -> Bool
-propB xs = (sum . map sum) xs == (sum . concat) xs
+-- propB :: [Integer] -> Bool
+-- propB xs = (sum . map sum) xs == (sum . concat) xs
 
 propC :: [Integer] -> Bool
 propC xs = (sum . sort) xs == sum xs
 
--- propTests :: TestTree
+propTests :: TestTree
+propTests =
+    testGroup
+        ""
+        [ testProperty "" propA
+        , testProperty "" propC
+        ]
